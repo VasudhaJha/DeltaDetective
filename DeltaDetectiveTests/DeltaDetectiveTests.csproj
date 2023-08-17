@@ -25,4 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\DeltaDetective\DeltaDetective.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="TestFiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestFiles\" />
+  </ItemGroup>
 </Project>
