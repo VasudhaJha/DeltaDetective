@@ -5,14 +5,14 @@ namespace DeltaDetective.Helpers
     /// <summary>
     /// A utility class for reading the content of text files.
     /// </summary>
-	public class FileReader
+	public static class FileReader
 	{
         /// <summary>
         /// Reads the content of the file and returns it as a string.
         /// </summary>
         /// <returns>The content of the file.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the file does not exist.</exception>
-        public string ReadFileContent(string filePath)
+        public static string ReadFileContent(string filePath)
         {
             try
             {
@@ -20,6 +20,9 @@ namespace DeltaDetective.Helpers
                 {
                     throw new FileNotFoundException("File not found.", filePath);
                 }
+
+                string absoluteFilePath = Path.GetFullPath(filePath);
+                Console.WriteLine($"Reading file: {absoluteFilePath}");
 
                 using StreamReader reader = new StreamReader(filePath);
                 return reader.ReadToEnd();
