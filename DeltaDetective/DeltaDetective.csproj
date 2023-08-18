@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <None Remove="Helpers\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
