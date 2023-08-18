@@ -8,6 +8,8 @@ namespace DeltaDetective.Helpers
         private string File2;
 		private string _file1Contents;
 		private string _file2Contents;
+        private int _additions;
+        private int _removals;
 
         public TextComparer(string file1Path, string file2Path)
 		{
@@ -93,6 +95,8 @@ namespace DeltaDetective.Helpers
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: tokens2[j - 1]
                         ));
+                    _additions++;
+                    _removals++;
                     i--;
                     j--;
                 }
@@ -105,6 +109,7 @@ namespace DeltaDetective.Helpers
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
                         ));
+                    _removals++;
                     i--;
                 }
                 else if (dp[i, j] == dp[i, j - 1] + 1)
@@ -116,6 +121,7 @@ namespace DeltaDetective.Helpers
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]
                         ));
+                    _additions++;
                     j--;
                 }
             }
@@ -129,6 +135,7 @@ namespace DeltaDetective.Helpers
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
                         ));
+                _removals++;
                 i--;
             }
 
@@ -141,6 +148,7 @@ namespace DeltaDetective.Helpers
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]
                         ));
+                _additions++;
                 j--;
             }
 
@@ -151,9 +159,19 @@ namespace DeltaDetective.Helpers
         {
             string absoluteFilePath1 = Path.GetFullPath(File1);
             string absoluteFilePath2 = Path.GetFullPath(File2);
-            Console.WriteLine($"--- a{absoluteFilePath1}");
-            Console.WriteLine($"+++ b{absoluteFilePath1}");
+
+            Console.Write($"---a{absoluteFilePath1} ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{_removals} removals");
+            Console.ResetColor();
+
+            Console.Write($"+++b{absoluteFilePath2} ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{_additions} additions");
+            Console.ResetColor();
+
             Console.WriteLine("\n");
+
             for (int i = 0; i < tokens1.Length; i++)
             {
                 Difference diff = differences.FirstOrDefault(d => d.WordNumber == i);
@@ -176,6 +194,7 @@ namespace DeltaDetective.Helpers
                 Console.ResetColor();
             }
             Console.WriteLine("\n");
+
             for (int j = 0; j < tokens2.Length; j++)
             {
                 Difference diff = differences.FirstOrDefault(d => d.WordNumber == j);
