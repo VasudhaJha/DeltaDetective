@@ -1,6 +1,5 @@
 ﻿using System;
 using DeltaDetective.Helpers;
-using DeltaDetective.Models;
 namespace DeltaDetective;
 
 class Program
@@ -9,11 +8,21 @@ class Program
     {
         if (args.Length < 2)
         {
-            Console.WriteLine("Usage: DeltaDetective <file1> <file2>");
+            Console.WriteLine("Usage: DeltaDetective <Original File> <Changed File>");
+            return;
         }
-
-        TextComparer textComparer = new TextComparer("File1.txt", "File2.txt");
-        textComparer.Compare();
+        string file1Path = args[0];
+        string file2Path = args[1];
+        try
+        {
+            TextComparer textComparer = new TextComparer(file1Path, file2Path);
+            textComparer.Compare();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred: {e.Message}");
+        }
+        
     }
 }
 
