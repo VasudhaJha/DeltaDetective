@@ -17,7 +17,7 @@ public class FileReaderTests
     public void ReadFileContent_ValidFile_ReturnsContent()
     {
         // Arrange
-        string filePath = GetTestFilePath("ExistingFile.txt");
+        string filePath = GetTestFilePath("NonEmptyFile.txt");
         string expectedContent = "This file exists.";
 
         // Act
