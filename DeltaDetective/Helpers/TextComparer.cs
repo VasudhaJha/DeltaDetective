@@ -97,7 +97,7 @@ namespace DeltaDetective.Helpers
 				{
 					// Replacement case
                     differences.Add(new Difference(
-                        lineNumber: i,
+                        wordNumber: i,
                         type: DifferenceType.Replaced,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: tokens2[j - 1]
@@ -109,7 +109,7 @@ namespace DeltaDetective.Helpers
                 {
 					// When the word in file1 was deleted
                     differences.Add(new Difference(
-                        lineNumber: i,
+                        wordNumber: i,
                         type: DifferenceType.Deleted,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
@@ -120,7 +120,7 @@ namespace DeltaDetective.Helpers
                 {
 					// When a word was inserted in file2
                     differences.Add(new Difference(
-                        lineNumber: i,
+                        wordNumber: i,
                         type: DifferenceType.Added,
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]
@@ -133,7 +133,7 @@ namespace DeltaDetective.Helpers
             {
 				// words deleted from file 1
                 differences.Add(new Difference(
-                        lineNumber: i,
+                        wordNumber: i,
                         type: DifferenceType.Deleted,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
@@ -145,7 +145,7 @@ namespace DeltaDetective.Helpers
             {
 				// words added in file2
                 differences.Add(new Difference(
-                        lineNumber: i,
+                        wordNumber: i,
                         type: DifferenceType.Added,
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]

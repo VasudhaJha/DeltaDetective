@@ -17,19 +17,11 @@ class Program
         for (int i = differences.Count - 1; i >= 0; i--)
         {
             Difference diff = differences[i];
-            Console.WriteLine($"Line Number: {diff.LineNumber}");
+            Console.WriteLine($"Word Number: {diff.WordNumber}");
             Console.WriteLine($"Difference Type: {diff.Type}");
-            Console.WriteLine($"Content in File 1: {diff.ContentInFile1}");
-            Console.WriteLine($"Content in File 2: {diff.ContentInFile2}");
+            Console.WriteLine($"From: '{diff.ContentInFile1}'");
+            Console.WriteLine($"To: '{diff.ContentInFile2}'");
         }
-
-        //foreach (Difference diff in differences)
-        //{
-        //    Console.WriteLine($"Line Number: {diff.LineNumber}");
-        //    Console.WriteLine($"Difference Type: {diff.Type}");
-        //    Console.WriteLine($"Content in File 1: {diff.ContentInFile1}");
-        //    Console.WriteLine($"Content in File 2: {diff.ContentInFile2}");
-        //}
     }
 }
 
