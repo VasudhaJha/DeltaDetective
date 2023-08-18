@@ -20,10 +20,6 @@ namespace DeltaDetective.Helpers
                 {
                     throw new FileNotFoundException("File not found.", filePath);
                 }
-
-                string absoluteFilePath = Path.GetFullPath(filePath);
-                Console.WriteLine($"Reading file: {absoluteFilePath}");
-
                 using StreamReader reader = new StreamReader(filePath);
                 return reader.ReadToEnd();
             }

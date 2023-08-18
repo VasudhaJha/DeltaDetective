@@ -26,25 +26,16 @@ namespace DeltaDetective.Helpers
             }
         }
 
-		public List<Difference> Compare()
+		public void Compare()
 		{
             string[] tokens1 = _file1Contents.Split();
             string[] tokens2 = _file2Contents.Split();
-            foreach (string token in tokens1)
-            {
-                Console.WriteLine($"In first file, {token}");
-            }
-
-            foreach (string token in tokens2)
-            {
-                Console.WriteLine($"In second file, {token}");
-            }
-
-            Console.WriteLine("-----------------------------");
 
             int[,] dp = FindLevenshteinDistance(tokens1, tokens2);
 
-			return FindDifferences(tokens1, tokens2, dp);
+			List<Difference> differences = FindDifferences(tokens1, tokens2, dp);
+
+            DisplayDifferences(tokens1, tokens2, differences);
         }
 
 		private int[,] FindLevenshteinDistance(string[] tokens1, string[] tokens2)
@@ -93,23 +84,23 @@ namespace DeltaDetective.Helpers
 					i--;
 					j--;
 				}
-				else if (dp[i, j] == dp[i - 1, j - 1] + 1)
-				{
-					// Replacement case
+                else if (dp[i, j] == dp[i - 1, j - 1] + 1)
+                {
+                    // When the word in file1 was replaced with a different word in file2
                     differences.Add(new Difference(
-                        wordNumber: i,
+                        wordNumber: i - 1,
                         type: DifferenceType.Replaced,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: tokens2[j - 1]
                         ));
-					i--;
-					j--;
-				}
+                    i--;
+                    j--;
+                }
                 else if (dp[i, j] == dp[i - 1, j] + 1)
                 {
 					// When the word in file1 was deleted
                     differences.Add(new Difference(
-                        wordNumber: i,
+                        wordNumber: i - 1,
                         type: DifferenceType.Deleted,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
@@ -120,7 +111,7 @@ namespace DeltaDetective.Helpers
                 {
 					// When a word was inserted in file2
                     differences.Add(new Difference(
-                        wordNumber: i,
+                        wordNumber: j - 1,
                         type: DifferenceType.Added,
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]
@@ -133,7 +124,7 @@ namespace DeltaDetective.Helpers
             {
 				// words deleted from file 1
                 differences.Add(new Difference(
-                        wordNumber: i,
+                        wordNumber: i - 1,
                         type: DifferenceType.Deleted,
                         contentInFile1: tokens1[i - 1],
                         contentInFile2: ""
@@ -145,7 +136,7 @@ namespace DeltaDetective.Helpers
             {
 				// words added in file2
                 differences.Add(new Difference(
-                        wordNumber: i,
+                        wordNumber: j - 1,
                         type: DifferenceType.Added,
                         contentInFile1: "",
                         contentInFile2: tokens2[j - 1]
@@ -154,6 +145,59 @@ namespace DeltaDetective.Helpers
             }
 
             return differences;
+        }
+
+        private void DisplayDifferences(string[] tokens1, string[] tokens2, List<Difference> differences)
+        {
+            string absoluteFilePath1 = Path.GetFullPath(File1);
+            string absoluteFilePath2 = Path.GetFullPath(File2);
+            Console.WriteLine($"--- a{absoluteFilePath1}");
+            Console.WriteLine($"+++ b{absoluteFilePath1}");
+            Console.WriteLine("\n");
+            for (int i = 0; i < tokens1.Length; i++)
+            {
+                Difference diff = differences.FirstOrDefault(d => d.WordNumber == i);
+                
+                if (diff != null)
+                {
+                    switch (diff.Type)
+                    {
+                        case DifferenceType.Deleted:
+                            Console.BackgroundColor = Constants.DeletedBackgroundColor;
+                            break;
+                        case DifferenceType.Replaced:
+                            Console.BackgroundColor = Constants.DeletedBackgroundColor;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Console.Write(tokens1[i] + " ");
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int j = 0; j < tokens2.Length; j++)
+            {
+                Difference diff = differences.FirstOrDefault(d => d.WordNumber == j);
+
+                if (diff != null)
+                {
+                    switch (diff.Type)
+                    {
+                        case DifferenceType.Added:
+                            Console.BackgroundColor = Constants.AddedBackgroundColor;
+                            break;
+                        case DifferenceType.Replaced:
+                            Console.BackgroundColor = Constants.AddedBackgroundColor;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Console.Write(tokens2[j] + " ");
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
         }
 	}
 }
