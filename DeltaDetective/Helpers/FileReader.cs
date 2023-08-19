@@ -14,20 +14,12 @@ namespace DeltaDetective.Helpers
         /// <exception cref="FileNotFoundException">Thrown if the file does not exist.</exception>
         public static string ReadFileContent(string filePath)
         {
-            try
+            if (!File.Exists(filePath))
             {
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException("File not found.", filePath);
-                }
-                using StreamReader reader = new StreamReader(filePath);
-                return reader.ReadToEnd();
+                throw new FileNotFoundException("File not found.", filePath);
             }
-            catch (FileNotFoundException e)
-            {
-                // Rethrow the exception to provide more context
-                throw new FileNotFoundException($"File not found: {filePath}", e);
-            }
+            using StreamReader reader = new StreamReader(filePath);
+            return reader.ReadToEnd();
         }
     }
 }

@@ -13,16 +13,9 @@ class Program
         }
         string file1Path = args[0];
         string file2Path = args[1];
-        try
-        {
-            TextComparer textComparer = new TextComparer(file1Path, file2Path);
-            textComparer.Compare();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"An error occurred: {e.Message}");
-        }
         
+        TextComparer textComparer = new TextComparer(file1Path, file2Path);
+        textComparer.Compare();   
     }
 }
 
